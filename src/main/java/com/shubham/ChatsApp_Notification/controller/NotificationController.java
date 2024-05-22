@@ -1,29 +1,18 @@
-package com.shubham.ChatsApp_Notification.controller;
+package com.example.notification.controller;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class NotificationController {
 
     @PostMapping("/sendNotification")
-    public String sendNotification(@RequestBody NotificationRequest request) {
-        try {
-            Message message = Message.builder()
-                    .setToken(request.getRecipientToken())
-                    .setNotification(new Notification("Hello", request.getText()))
-                    .build();
-
-            String response = FirebaseMessaging.getInstance().send(message);
-            return "Message sent: " + response;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error sending message: " + e.getMessage();
-        }
+    public ResponseEntity<String> sendNotification(@RequestBody NotificationRequest notificationRequest) {
+        // Implement your logic to send notification here
+        System.out.println("Recipient Token: " + notificationRequest.getRecipientToken());
+        System.out.println("Message Text: " + notificationRequest.getText());
+        // Return response
+        return ResponseEntity.ok("Notification sent successfully!");
     }
 }
 
@@ -32,6 +21,7 @@ class NotificationRequest {
     private String text;
 
     // Getters and Setters
+
     public String getRecipientToken() {
         return recipientToken;
     }
