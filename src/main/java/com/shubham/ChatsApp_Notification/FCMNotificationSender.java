@@ -19,6 +19,7 @@ public class FCMNotificationSender {
 
     public static void sendNotification(String userDeviceToken, String title, String body) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            System.out.println("Sending notification to: " + userDeviceToken);
             HttpPost httpPost = new HttpPost(FCM_URL);
             httpPost.setHeader("Authorization", "key=" + SERVER_KEY);
             httpPost.setHeader("Content-Type", "application/json");
@@ -28,6 +29,7 @@ public class FCMNotificationSender {
 
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 if (response.getCode() != 200) {
+                    System.out.println("Failed to send notification");
                     throw new HttpResponseException(response.getCode(), "Failed to send notification");
                 }
             }
@@ -56,8 +58,10 @@ public class FCMNotificationSender {
     public static void main(String[] args) {
         try {
             sendNotification("USER_DEVICE_TOKEN", "New Message", "You have received a new message");
+            System.out.println("Notification sent successfully");
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Failed to send notification");
         }
     }
 }

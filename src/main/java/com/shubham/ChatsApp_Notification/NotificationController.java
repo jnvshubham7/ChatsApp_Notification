@@ -1,12 +1,8 @@
-
 package com.shubham.ChatsApp_Notification;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-// Add missing import statement
-import com.shubham.ChatsApp_Notification.FCMNotificationSender;
 
 @RestController
 public class NotificationController {
@@ -14,9 +10,12 @@ public class NotificationController {
     @PostMapping("/sendNotification")
     public void sendNotification(@RequestBody NotificationRequest request) {
         try {
+            System.out.println("Received request: " + request);
             FCMNotificationSender.sendNotification(request.getToken(), request.getTitle(), request.getBody());
+            System.out.println("Notification sent successfully");
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Failed to send notification");
         }
     }
 }
@@ -49,5 +48,14 @@ class NotificationRequest {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        return "NotificationRequest{" +
+                "token='" + token + '\'' +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                '}';
     }
 }
